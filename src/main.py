@@ -38,7 +38,7 @@ class Func:
         self.returns = returns
     
     def __str__(self):
-        return '{}: {} -> {}'.format(self.name, self.parameters, self.returns)
+        return '({}:{}->{})'.format(self.name, self.parameters, self.returns)
     
     def __repr__(self):
         return self.__str__()
@@ -51,6 +51,16 @@ class Func:
     @property
     def catogory(self):
         return Category.FUNC
+
+class GenericType:
+    def __init__(self, name, *generics):
+        self.name = name
+        self.generics = generics
+    
+    def __str__(self):
+        return '{}[{}]'.format(self.name, ','.join(map(lambda _:str(_), self.generics)))
+        
+
 
 def build(name:str, parameters:str, returns:str):
     parameters = list(map(lambda _:_.strip(), parameters.split(',')))
@@ -69,5 +79,9 @@ def currying(func: Type[Func]) -> Type[Func]:
 if __name__ == "__main__":
     bar = build('bar','a,b,c','d,g')
     print(bar('a', 'b', 'c'))
+    book = GenericType('book', 'a', Func(['b,c'], ['d']))
+    print(book)
+    # print(bar('b', 'c'))
     print(currying(build('bar','a,b,c','d')))
     print(build('bar','a,b,c','d,g'))
+    print(gt('n', 'b,c'))
